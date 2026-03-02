@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Escolar - 3 Trimestres</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+        }
+
+        /* Menu Principal */
+        .menu-principal {
+            background: linear-gradient(90deg, #1a1a2e 0%, #16213e 100%);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .menu-principal ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .menu-principal a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            transition: all 0.3s;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .menu-principal a:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Mensagem de Boas-vindas */
+        .boas-vindas {
+            display: none;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .boas-vindas.mostrar {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .boas-vindas h2 {
+            color: #1a1a2e;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+        }
+
+        .boas-vindas p {
+            color: #2d3436;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+
+        .boas-vindas .emoji {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Seções de Trimestre */
+        .trimestre {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .trimestre.ativo {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .trimestre-titulo {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            margin: 30px 0;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+        }
+
+        /* Menu de Tarefas */
+        .menu-tarefas {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .menu-tarefas h3 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.4em;
+        }
+
+        .menu-tarefas ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .menu-tarefas a {
+            display: block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+        }
+
+        .menu-tarefas a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.5);
+        }
+
+        /* Cards de Tarefas */
+        .tarefa {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            margin-bottom: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .tarefa h2 {
+            color: #11998e;
+            border-bottom: 4px solid #38ef7d;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        /* T1 - Introdução HTML */
+        .intro-html {
+            line-height: 1.9;
+        }
+
+        .intro-html h3 {
+            color: #16213e;
+            margin: 25px 0 15px;
+        }
+
+        .intro-html code {
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+        }
+
+        .intro-html pre {
+            background: #1a1a2e;
+            color: #a8d8ea;
+            padding: 25px;
+            border-radius: 15px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 5px solid #38ef7d;
+        }
+
+        /* T2 - Mídia */
+        .midia-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .midia-item {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 20px;
+            transition: transform 0.3s;
+        }
+
+        .midia-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .midia-item h3 {
+            color: #11998e;
+            margin-bottom: 15px;
+        }
+
+        .midia-item img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .midia-item video,
+        .midia-item audio {
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        /* T3 - Tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e8f5e9;
+        }
+
+        /* T4 - Formulários */
+        .formulario {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1a1a2e;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #11998e;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(17, 153, 142, 0.1);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.5);
+        }
+
+        /* T5 - Bilhete de Identidade */
+        .bilhete {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            border-radius: 25px;
+            padding: 35px;
+            border: 4px solid #11998e;
+        }
+
+        .bilhete-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .bilhete-header h3 {
+            color: #11998e;
+            font-size: 2em;
+        }
+
+        .bilhete-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .info-item {
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .info-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .info-item strong {
+            color: #11998e;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        /* CSS - Introdução */
+        .css-intro {
+            line-height: 1.9;
+        }
+
+        .css-intro h3 {
+            color: #16213e;
+            margin: 25px 0 15px;
+        }
+
+        .exemplo-css {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #11998e;
+        }
+
+        /* Seletores CSS */
+        .seletores-demo {
+            padding: 25px;
+            background: #f0f0f0;
+            border-radius: 15px;
+        }
+
+        .demo-elemento {
+            padding: 18px;
+            margin: 12px 0;
+            border-radius: 12px;
+        }
+
+        #demo-id {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .demo-classe {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Divs */
+        .divs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .div-exemplo {
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .div-exemplo:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .div-1 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .div-2 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .div-3 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .div-4 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+        /* Listas */
+        .listas-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+        }
+
+        .lista-box {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .lista-box h4 {
+            color: #11998e;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .lista-ordenada {
+            list-style-type: decimal;
+            padding-left: 25px;
+        }
+
+        .lista-nao-ordenada {
+            list-style-type: disc;
+            padding-left: 25px;
+        }
+
+        .lista-personalizada {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .lista-personalizada li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+        }
+
+        .lista-personalizada li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #11998e;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin: 8px 0;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .menu-principal ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .trimestre-titulo {
+                font-size: 1.8em;
+            }
+
+            .boas-vindas h2 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Principal -->
+    <nav class="menu-principal">
+        <ul>
+            <li><a href="#" onclick="mostrarTrimestre(1)">1º Trimestre</a></li>
+            <li><a href="#" onclick="mostrarTrimestre(2)">2º Trimestre</a></li>
+            <li><a href="#" onclick="mostrarTrimestre(3)">3º Trimestre</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Mensagem de Boas-vindas -->
+        <div id="boas-vindas" class="boas-vindas">
+            <div class="emoji">🎓📚✨</div>
+            <h2>Bem-vindo ao Ano Letivo 2025/2026!</h2>
+            <p>Preparado para aprender HTML e CSS de forma divertida e prática!</p>
+        </div>
+
+        <!-- ==================== 1º TRIMESTRE ==================== -->
+        <div id="trimestre1" class="trimestre ativo">
+            <h1 class="trimestre-titulo">1º Trimestre - HTML Básico</h1>
+
+            <!-- Menu de Tarefas -->
+            <div class="menu-tarefas">
+                <h3>Tarefas do 1º Trimestre</h3>
+                <ul>
+                    <li><a href="#t1-t1">T1 - Introdução</a></li>
+                    <li><a href="#t1-t2">T2 - Mídia</a></li>
+                    <li><a href="#t1-t3">T3 - Tabelas</a></li>
+                    <li><a href="#t1-t4">T4 - Formulários</a></li>
+                    <li><a href="#t1-t5">T5 - Bilhete ID</a></li>
+                </ul>
+            </div>
+
+            <!-- T1 - Introdução ao HTML -->
+            <div id="t1-t1" class="tarefa">
+                <h2>T1 - Introdução ao HTML</h2>
+                <div class="intro-html">
+                    <p>HTML (HyperText Markup Language) é a linguagem padrão para criar páginas web. É a espinha dorsal de todo site na internet.</p>
+                    
+                    <h3>O que é HTML?</h3>
+                    <p>HTML é uma linguagem de marcação que usa "tags" para estruturar o conteúdo de uma página. Cada tag tem uma função específica.</p>
+
+                    <h3>Estrutura Básica</h3>
+                    <pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Título da Página&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Meu Primeiro Título&lt;/h1&gt;
+    &lt;p&gt;Meu primeiro parágrafo.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+                    <h3>Principais Tags</h3>
+                    <ul>
+                        <li><code>&lt;h1&gt; a &lt;h6&gt;</code> - Títulos de diferentes níveis</li>
+                        <li><code>&lt;p&gt;</code> - Parágrafos</li>
+                        <li><code>&lt;a&gt;</code> - Links</li>
+                        <li><code>&lt;img&gt;</code> - Imagens</li>
+                        <li><code>&lt;div&gt;</code> - Divisões de conteúdo</li>
+                        <li><code>&lt;span&gt;</code> - Elementos em linha</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- T2 - Imagem, Vídeo e Áudio DIFERENTES -->
+            <div id="t1-t2" class="tarefa">
+                <h2>T2 - Imagem, Vídeo e Áudio</h2>
+                <div class="midia-container">
+                    <div class="midia-item">
+                        <h3>🖼️ Imagem</h3>
+                        <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400" alt="Programação e código">
+                        <p>Desenvolvimento de Software</p>
+                    </div>
+                    <div class="midia-item">
+                        <h3>🎬 Vídeo</h3>
+                        <video controls poster="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400">
+                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                            Seu navegador não suporta vídeos.
+                        </video>
+                        <p>Vídeo de demonstração</p>
+                    </div>
+                    <div class="midia-item">
+                        <h3>🎵 Áudio</h3>
+                        <audio controls>
+                            <source src="https://commondatastorage.googleapis.com/codeskulptor-demos/riceracer_assets/music/win.ogg" type="audio/ogg">
+                            Seu navegador não suporta áudio.
+                        </audio>
+                        <p>Música de fundo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- T3 - Tabelas -->
+            <div id="t1-t3" class="tarefa">
+                <h2>T3 - Tabelas em HTML</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Idade</th>
+                            <th>Email</th>
+                            <th>Nº de Telefone</th>
+                            <th>Morada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Carlos Mendes</td>
+                            <td>24</td>
+                            <td>carlos.mendes@email.com</td>
+                            <td>+244 923 111 222</td>
+                            <td>Rua Azul, nº 50</td>
+                        </tr>
+                        <tr>
+                            <td>Fernanda Lima</td>
+                            <td>28</td>
+                            <td>fernanda.lima@email.com</td>
+                            <td>+244 912 333 444</td>
+                            <td>Avenida Verde, nº 100</td>
+                        </tr>
+                        <tr>
+                            <td>Ricardo Souza</td>
+                            <td>31</td>
+                            <td>ricardo.souza@email.com</td>
+                            <td>+244 934 555 666</td>
+                            <td>Travessa Amarela, nº 25</td>
+                        </tr>
+                        <tr>
+                            <td>Patrícia Oliveira</td>
+                            <td>26</td>
+                            <td>patricia.oliveira@email.com</td>
+                            <td>+244 945 777 888</td>
+                            <td>Rua Vermelha, nº 75</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- T4 - Formulários -->
+            <div id="t1-t4" class="tarefa">
+                <h2>T4 - Formulários em HTML</h2>
+                <form class="formulario">
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type
